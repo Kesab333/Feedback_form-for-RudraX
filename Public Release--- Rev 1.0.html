@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Feedback & Suggestions Form</title>
+
+<style>
+
+body {
+    font-family: "Times New Roman";
+    background: #f5f5f5;
+}
+
+.container {
+
+    width: 700px;
+    margin: auto;
+
+    background: white;
+
+    padding: 30px;
+
+    border: 2px solid #0f285a;
+}
+
+h1 {
+
+    background: #0f285a;
+    color: white;
+
+    text-align: center;
+
+    padding: 15px;
+
+    margin-top: 0;
+}
+
+label {
+
+    display: block;
+
+    margin-top: 15px;
+
+    font-weight: bold;
+}
+
+input,
+textarea {
+
+    width: 100%;
+
+    padding: 8px;
+
+    margin-top: 5px;
+
+    border: 1px solid #ccc;
+
+    font-size: 14px;
+}
+
+button {
+
+    margin-top: 20px;
+
+    padding: 10px 20px;
+
+    background: #0f285a;
+
+    color: white;
+
+    border: none;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+Feedback & Suggestions Form
+</h1>
+
+<form action="https://formspree.io/f/xbdpaonj" method="POST">
+
+<label>Full Name</label>
+<input type="text" name="Full Name" required>
+
+<label>Email Address</label>
+<input type="email" name="Email" required>
+
+<label>Phone Number</label>
+<input type="text" name="Phone">
+
+<label>Organization / Institution</label>
+<input type="text" name="Organization">
+
+<label>Product Used</label>
+
+<input type="checkbox" name="Product" value="PhysicX"> PhysicX<br>
+
+<input type="checkbox" name="Product" value="ChemistrY"> ChemistrY<br>
+
+<input type="checkbox" name="Product" value="MathematicX"> MathematicX<br>
+
+<label>Feedback</label>
+
+<textarea name="Feedback" rows="6" required></textarea>
+
+<button type="submit">
+Submit Form
+</button>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
