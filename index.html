@@ -82,6 +82,23 @@ body {
   opacity: .7;
 }
 
+/* ── Fixed page watermark logo ─────────────────────────────────────── */
+#bg-watermark {
+  position: fixed;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#bg-watermark img {
+  width: min(65vw, 600px);
+  height: auto;
+  opacity: .055;
+  filter: grayscale(1) contrast(.8);
+  user-select: none;
+}
+
 /* ── Grid bg ───────────────────────────────────────────────────────── */
 body::before {
   content: '';
@@ -119,15 +136,15 @@ body::before {
 }
 
 .nav-logo-box {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--navy), var(--navy-lt));
-  border-radius: 8px;
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 14px; font-weight: 900;
-  color: var(--gold-lt);
-  box-shadow: 0 3px 10px rgba(15,40,90,.25);
-  letter-spacing: -1px;
+  flex-shrink: 0;
+}
+
+.nav-logo-box img {
+  width: 40px; height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(15,40,90,.22));
 }
 
 .nav-name {
@@ -231,48 +248,26 @@ body::before {
 
 @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-/* Logo hexagon */
+/* Logo image — no box, just the image with glow */
 .logo-hex {
-  width: 130px; height: 130px;
-  background: linear-gradient(145deg, var(--navy) 0%, var(--navy-lt) 60%, #3468c0 100%);
-  border-radius: 28px;
+  width: 160px; height: 160px;
   display: flex; align-items: center; justify-content: center;
   position: relative;
-  box-shadow:
-    0 0 0 1px rgba(165,130,58,.3),
-    0 0 0 8px rgba(165,130,58,.08),
-    0 20px 60px rgba(15,40,90,.3);
   cursor: default;
 }
 
-.logo-hex::after {
-  content: '';
-  position: absolute; inset: 2px;
-  border-radius: 26px;
-  border: 1px solid rgba(255,255,255,.08);
+.logo-hex img {
+  width: 160px; height: 160px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 18px rgba(165,130,58,.35))
+    drop-shadow(0 8px 30px rgba(15,40,90,.30));
+  animation: logoFloat 4s ease-in-out infinite;
 }
 
-.logo-inner-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 26px; font-weight: 900;
-  color: var(--white);
-  letter-spacing: -2px;
-  text-shadow: 0 2px 8px rgba(0,0,0,.3);
-}
-
-.logo-inner-text span { color: var(--gold-lt); }
-
-.logo-badge {
-  position: absolute;
-  bottom: -10px; right: -10px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-  color: var(--navy);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 8px; font-weight: 700;
-  letter-spacing: 1px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  box-shadow: 0 3px 10px rgba(165,130,58,.4);
+@keyframes logoFloat {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
 }
 
 .hero-tagline {
@@ -510,43 +505,23 @@ body::before {
 .platform-card:hover::after { opacity: 1; }
 
 .platform-qr {
-  width: 90px; height: 90px;
-  background: var(--surf);
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
+  width: 100px; height: 100px;
   margin: 0 auto 12px;
   display: flex; align-items: center; justify-content: center;
-  position: relative;
+  border-radius: var(--radius);
   overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surf);
+  transition: box-shadow .3s;
 }
 
-/* Mini QR pattern */
-.qr-inner { width: 70px; height: 70px; position: relative; }
-.qr-inner::before, .qr-inner::after {
-  content: '';
-  position: absolute;
-  width: 18px; height: 18px;
-  border: 2.5px solid var(--navy);
-}
-.qr-inner::before { top: 0; left: 0; border-right: none; border-bottom: none; }
-.qr-inner::after  { top: 0; right: 0; border-left: none; border-bottom: none; }
-
-.qr-corner-bl {
-  position: absolute; bottom: 0; left: 0;
-  width: 18px; height: 18px;
-  border: 2.5px solid var(--navy);
-  border-right: none; border-top: none;
+.platform-card:hover .platform-qr {
+  box-shadow: 0 4px 16px rgba(15,40,90,.12);
 }
 
-.qr-dots {
-  position: absolute; top: 22px; left: 5px; right: 5px; bottom: 5px;
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px;
-}
-
-.qr-dot {
-  border-radius: 1px;
-  background: var(--navy);
-  opacity: 0;
+.platform-qr img {
+  width: 90px; height: 90px;
+  object-fit: contain;
 }
 
 .platform-label {
@@ -981,16 +956,6 @@ body::before {
   padding-top: 16px; margin-top: 4px;
 }
 
-.platform-logo {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-
-
-
 /* ═══════════════════════════════════════════════════════
    SCROLL REVEAL
 ═══════════════════════════════════════════════════════ */
@@ -1028,6 +993,11 @@ body::before {
 <!-- ── Particle canvas ─────────────────────────────────────────── -->
 <canvas id="particle-canvas"></canvas>
 
+<!-- ── Fixed background watermark ──────────────────────────────────── -->
+<div id="bg-watermark">
+  <img src="assets/logo/logo.png" alt="">
+</div>
+
 <div class="page-wrapper">
 
 <!-- ════════════════════════════════════
@@ -1035,7 +1005,7 @@ body::before {
 ════════════════════════════════════ -->
 <nav class="navbar">
   <a href="#hero" class="nav-brand">
-    <div class="nav-logo-box">RX</div>
+    <div class="nav-logo-box"><img src="assets/logo/logo.png" alt="RudraX Logo"></div>
     <div class="nav-name">Rudra<span>X</span></div>
   </a>
   <ul class="nav-links">
@@ -1054,8 +1024,7 @@ body::before {
     <div class="orbital-ring-2"></div>
     <div class="orbital-ring"></div>
     <div class="logo-hex">
-      <div class="logo-inner-text">Ph<span>X</span></div>
-      <div class="logo-badge">v1.0</div>
+      <img src="assets/logo/logo.png" alt="RudraX Logo">
     </div>
   </div>
 
@@ -1209,26 +1178,28 @@ body::before {
 
       <div class="platform-grid">
         <a href="https://kesab333.github.io/RudraX_Official/" target="_blank" class="platform-card">
-        <div class="platform-card">
-            <div class="platform-qr">
-              <img src="assets/qr/PhysicX.png" alt="PhysicX QR Code" class="qr-image">
+          <div class="platform-qr">
+            <img src="assets/qr/PhysicX.png" alt="PhysicX QR Code">
           </div>
-          <div class="platform-label"><img src="assets/logo/PhysicX.png" class="platform-logo"> PhysicX</div>
+          <div style="margin-bottom:6px;"><img src="PhysicX.png" alt="PhysicX" style="height:28px;object-fit:contain;"></div>
+          <div class="platform-label">PhysicX</div>
           <div class="platform-tag">Click to visit</div>
         </a>
         <div class="platform-card">
           <div class="platform-qr">
-              <img src="assets/qr/MathematicX.png" alt="PhysicX QR Code" class="qr-image">
+            <img src="assets/qr/MathematicX.png" alt="MathematicX QR Code">
           </div>
-          <div class="platform-label"><img src="assets/logo/MathematicX.png" class="platform-logo"> MathematicX</div>
+          <div style="margin-bottom:6px;"><img src="MathematicX.png" alt="MathematicX" style="height:28px;object-fit:contain;"></div>
+          <div class="platform-label">MathematicX</div>
           <div class="platform-tag">Coming soon</div>
           <div class="coming-soon-tag">Soon</div>
         </div>
         <div class="platform-card">
           <div class="platform-qr">
-              <img src="assets/qr/ChemistrY.png" alt="PhysicX QR Code" class="qr-image">
+            <img src="assets/qr/Chemistry.png" alt="ChemistrY QR Code">
           </div>
-          <div class="platform-label"><img src="assets/logo/ChemistrY.png" class="platform-logo"> ChemistrY</div>
+          <div style="margin-bottom:6px;"><img src="Chemistry.png" alt="ChemistrY" style="height:28px;object-fit:contain;"></div>
+          <div class="platform-label">ChemistrY</div>
           <div class="platform-tag">Coming soon</div>
           <div class="coming-soon-tag">Soon</div>
         </div>
@@ -1309,11 +1280,11 @@ body::before {
     <div class="gold-rule reveal"><div class="gold-rule-line"></div><div class="gold-rule-diamond"></div><div class="gold-rule-line"></div></div>
 
     <div class="contact-grid reveal">
-      <a href="mailto:physicx.support@gmail.com" class="contact-item">
+      <a href="/cdn-cgi/l/email-protection#77071f0e041e140f590402070718050337101a161e1b5914181a" class="contact-item">
         <div class="contact-icon">✉️</div>
         <div>
           <div class="contact-label">Email</div>
-          <div class="contact-value">physicx.support@gmail.com</div>
+          <div class="contact-value"><span class="__cf_email__" data-cfemail="6e1e06171d070d16401d1b1e1e011c1a2e09030f0702400d0103">[email&#160;protected]</span></div>
         </div>
       </a>
       <a href="https://wa.me/0000000000" class="contact-item">
@@ -1408,7 +1379,7 @@ body::before {
   <div class="form-card" id="fcard">
     <div class="form-ver-row">
       <div class="form-ver-badge">Form Ref: <span>FSF-2025</span> · Rev 2.1 · Quality &amp; Compliance Division</div>
-      <div class="form-ver-badge"><span>physicx.support@gmail.com</span></div>
+      <div class="form-ver-badge"><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="196971606a707a61376a6c6969766b6d597e74787075377a7674">[email&#160;protected]</a></span></div>
     </div>
 
     <!-- Step 1: User Info -->
@@ -1595,7 +1566,7 @@ body::before {
   <div class="footer-links">
     <a href="https://kesab333.github.io/RudraX_Official/" target="_blank">Official Site</a>
     <a href="https://kesab333.github.io/RudraX_community/" target="_blank">Community</a>
-    <a href="mailto:physicx.support@gmail.com">Email Support</a>
+    <a href="/cdn-cgi/l/email-protection#73031b0a001a100b5d000603031c010733141e121a1f5d101c1e">Email Support</a>
     <a href="#feedback-form">Submit Feedback</a>
   </div>
   <div class="footer-copy">
@@ -1605,7 +1576,7 @@ body::before {
 
 </div><!-- /page-wrapper -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ══════════════════════════════════════════════
 //  CUSTOM CURSOR
 // ══════════════════════════════════════════════
@@ -1688,26 +1659,6 @@ function animParticles() {
   requestAnimationFrame(animParticles);
 }
 animParticles();
-
-// ══════════════════════════════════════════════
-//  QR DOT PATTERNS
-// ══════════════════════════════════════════════
-const qrPatterns = {
-  qr1: [1,0,1,0,1,0, 0,1,0,1,0,1, 1,1,0,0,1,0, 0,0,1,1,0,1, 1,0,0,1,1,0, 0,1,1,0,0,1],
-  qr2: [1,1,0,1,0,0, 0,0,1,0,1,1, 1,0,1,1,0,0, 0,1,0,0,1,1, 1,1,1,0,0,1, 0,0,0,1,1,0],
-  qr3: [0,1,1,0,1,1, 1,0,0,1,0,0, 0,1,0,1,1,0, 1,0,1,0,0,1, 0,0,1,1,0,1, 1,1,0,0,1,0],
-};
-
-['qr1','qr2','qr3'].forEach(id => {
-  const container = document.getElementById(id);
-  if (!container) return;
-  qrPatterns[id].forEach(on => {
-    const d = document.createElement('div');
-    d.className = 'qr-dot';
-    if (on) d.style.opacity = '1';
-    container.appendChild(d);
-  });
-});
 
 // ══════════════════════════════════════════════
 //  SCROLL REVEAL
@@ -1877,7 +1828,7 @@ async function submitFrm() {
   };
 
   try {
-    const res = await fetch('https://forms/dfhgdg', {
+    const res = await fetch('https://formspree.io/f/xbdpaonj', {
       method: 'POST',
       headers: {'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload),
@@ -1895,14 +1846,4 @@ function showSuccess() {
   document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('fform-footer').style.display = 'none';
   document.getElementById('sscreen').classList.add('show');
-  for (let i=1;i<=TOTAL;i++) { document.getElementById('sd-'+i).className='step-dot done'; const c=document.getElementById('sc-'+i); if(c)c.style.width='100%'; }
-  document.getElementById('refid').textContent = 'FSF-' + new Date().getFullYear() + '-' + (1000+Math.floor(Math.random()*9000));
-}
-
-// spin keyframe
-const ks = document.createElement('style');
-ks.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
-document.head.appendChild(ks);
-</script>
-</body>
-</html>
+  for (let i=1;i<=TOTAL;i++) { document.getEleme
