@@ -1875,4 +1875,24 @@ function showSuccess() {
   document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('fform-footer').style.display = 'none';
   document.getElementById('sscreen').classList.add('show');
-  for (let i=1;i<=TOTAL;i++) { document.getEleme
+function showSuccess() {
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('fform-footer').style.display = 'none';
+  document.getElementById('sscreen').classList.add('show');
+  for (let i=1;i<=TOTAL;i++) {
+    document.getElementById('sd-'+i).className='step-dot done';
+    const c=document.getElementById('sc-'+i);
+    if(c) c.style.width='100%';
+  }
+  document.getElementById('refid').textContent =
+    'FSF-' + new Date().getFullYear() + '-' + (1000 + Math.floor(Math.random()*9000));
+}
+
+// Spin keyframe for submit button spinner
+const ks = document.createElement('style');
+ks.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(ks);
+
+</script>
+</body>
+</html>
