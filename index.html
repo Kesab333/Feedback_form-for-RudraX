@@ -1295,7 +1295,7 @@ body::before {
     <div class="gold-rule reveal"><div class="gold-rule-line"></div><div class="gold-rule-diamond"></div><div class="gold-rule-line"></div></div>
 
     <div class="contact-grid reveal">
-      <a href="physicx.support@gmail.com" class="contact-item">
+      <a href="mailto:physicx.support@gmail.com" class="contact-item">
         <div class="contact-icon">✉️</div>
         <div>
           <div class="contact-label">Email</div>
@@ -1394,7 +1394,7 @@ body::before {
   <div class="form-card" id="fcard">
     <div class="form-ver-row">
       <div class="form-ver-badge">Form Ref: <span>FSF-2025</span> · Rev 2.1 · Quality &amp; Compliance Division</div>
-      <div class="form-ver-badge"><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="196971606a707a61376a6c6969766b6d597e74787075377a7674">[email&#160;protected]</a></span></div>
+      <div class="form-ver-badge"><span>physicx.support@gmail.com</span></div>
     </div>
 
     <!-- Step 1: User Info -->
@@ -1581,7 +1581,7 @@ body::before {
   <div class="footer-links">
     <a href="https://kesab333.github.io/RudraX_Official/" target="_blank">Official Site</a>
     <a href="https://kesab333.github.io/RudraX_community/" target="_blank">Community</a>
-    <a href="/cdn-cgi/l/email-protection#73031b0a001a100b5d000603031c010733141e121a1f5d101c1e">Email Support</a>
+    <a href="mailto:physicx.support@gmail.com">Email Support</a>
     <a href="#feedback-form">Submit Feedback</a>
   </div>
   <div class="footer-copy">
@@ -1591,7 +1591,7 @@ body::before {
 
 </div><!-- /page-wrapper -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ══════════════════════════════════════════════
 //  CUSTOM CURSOR
 // ══════════════════════════════════════════════
@@ -1676,44 +1676,33 @@ function animParticles() {
 animParticles();
 
 // ══════════════════════════════════════════════
-//  SCROLL REVEAL — with hard fallback
+//  QR DOT PATTERNS
 // ══════════════════════════════════════════════
-const revEls = [...document.querySelectorAll('.reveal')];
+const qrPatterns = {
+  qr1: [1,0,1,0,1,0, 0,1,0,1,0,1, 1,1,0,0,1,0, 0,0,1,1,0,1, 1,0,0,1,1,0, 0,1,1,0,0,1],
+  qr2: [1,1,0,1,0,0, 0,0,1,0,1,1, 1,0,1,1,0,0, 0,1,0,0,1,1, 1,1,1,0,0,1, 0,0,0,1,1,0],
+  qr3: [0,1,1,0,1,1, 1,0,0,1,0,0, 0,1,0,1,1,0, 1,0,1,0,0,1, 0,0,1,1,0,1, 1,1,0,0,1,0],
+};
 
-if (revEls.length) {
-  const inView = el => {
-    const rect = el.getBoundingClientRect();
-    return rect.top < window.innerHeight - 40 && rect.bottom > 0;
-  };
-
-  revEls.forEach(el => {
-    if (inView(el)) el.classList.add('visible');
+['qr1','qr2','qr3'].forEach(id => {
+  const container = document.getElementById(id);
+  if (!container) return;
+  qrPatterns[id].forEach(on => {
+    const d = document.createElement('div');
+    d.className = 'qr-dot';
+    if (on) d.style.opacity = '1';
+    container.appendChild(d);
   });
+});
 
-  document.documentElement.classList.add('has-reveal');
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-    revEls.forEach(el => observer.observe(el));
-  } else {
-    revEls.forEach(el => el.classList.add('visible'));
-  }
-
-  // Hard fallback: if any .reveal is still hidden after 1.8s, force-show everything
-  setTimeout(() => {
-    document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
-      el.classList.add('visible');
-    });
-  }, 1800);
-}
+// ══════════════════════════════════════════════
+//  SCROLL REVEAL
+// ══════════════════════════════════════════════
+const revEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: .12 });
+revEls.forEach(el => observer.observe(el));
 
 // ══════════════════════════════════════════════
 //  NAVBAR ACTIVE LINK
@@ -1892,20 +1881,14 @@ function showSuccess() {
   document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('fform-footer').style.display = 'none';
   document.getElementById('sscreen').classList.add('show');
-  for (let i=1;i<=TOTAL;i++) {
-    document.getElementById('sd-'+i).className='step-dot done';
-    const c=document.getElementById('sc-'+i);
-    if(c) c.style.width='100%';
-  }
-  document.getElementById('refid').textContent =
-    'FSF-' + new Date().getFullYear() + '-' + (1000 + Math.floor(Math.random()*9000));
+  for (let i=1;i<=TOTAL;i++) { document.getElementById('sd-'+i).className='step-dot done'; const c=document.getElementById('sc-'+i); if(c)c.style.width='100%'; }
+  document.getElementById('refid').textContent = 'FSF-' + new Date().getFullYear() + '-' + (1000+Math.floor(Math.random()*9000));
 }
 
-// Spin keyframe for submit button spinner
+// spin keyframe
 const ks = document.createElement('style');
 ks.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
 document.head.appendChild(ks);
-
 </script>
 </body>
 </html>
