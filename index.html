@@ -967,14 +967,15 @@ body::before {
 /* ═══════════════════════════════════════════════════════
    SCROLL REVEAL — transform-only, never opacity:0
 ═══════════════════════════════════════════════════════ */
-.reveal {
-  transform: translateY(32px);
+.reveal { opacity: 1; transform: none; }
+.has-reveal .reveal {
   transition: opacity .65s var(--transition), transform .65s var(--transition);
+}
+.has-reveal .reveal:not(.visible) {
+  transform: translateY(32px);
   opacity: 0;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-/* Safety fallback: if JS fails or observer never fires, everything stays readable */
-.no-js .reveal, .reveal-fallback { opacity: 1 !important; transform: none !important; }
+.has-reveal .reveal.visible { opacity: 1; transform: translateY(0); }
 
 /* ── Responsive ───────────────────────────────────────────────────── */
 @media (max-width: 700px) {
@@ -1677,26 +1678,42 @@ animParticles();
 // ══════════════════════════════════════════════
 //  SCROLL REVEAL — with hard fallback
 // ══════════════════════════════════════════════
-const revEls = document.querySelectorAll('.reveal');
+const revEls = [...document.querySelectorAll('.reveal')];
 
-// Immediately reveal anything already in view on load
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      observer.unobserve(e.target);
-    }
+if (revEls.length) {
+  const inView = el => {
+    const rect = el.getBoundingClientRect();
+    return rect.top < window.innerHeight - 40 && rect.bottom > 0;
+  };
+
+  revEls.forEach(el => {
+    if (inView(el)) el.classList.add('visible');
   });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-revEls.forEach(el => observer.observe(el));
+  document.documentElement.classList.add('has-reveal');
 
-// Hard fallback: if any .reveal is still hidden after 1.8s, force-show everything
-setTimeout(() => {
-  document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
-    el.classList.add('visible');
-  });
-}, 1800);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    revEls.forEach(el => observer.observe(el));
+  } else {
+    revEls.forEach(el => el.classList.add('visible'));
+  }
+
+  // Hard fallback: if any .reveal is still hidden after 1.8s, force-show everything
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+      el.classList.add('visible');
+    });
+  }, 1800);
+}
 
 // ══════════════════════════════════════════════
 //  NAVBAR ACTIVE LINK
@@ -1871,10 +1888,6 @@ async function submitFrm() {
   }
 }
 
-function showSuccess() {
-  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('fform-footer').style.display = 'none';
-  document.getElementById('sscreen').classList.add('show');
 function showSuccess() {
   document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('fform-footer').style.display = 'none';
